@@ -4,11 +4,11 @@ public class MovieScreening
 {
     private DateTime _dateAndTime;
     private double _pricePerSeat;
-    Movie _movie;
+    public Movie Movie;
 
     public MovieScreening(Movie movie, DateTime dateAndTime, double pricePerSeat)
     {
-        this._movie = movie;
+        this.Movie = movie;
         this._dateAndTime = dateAndTime;
         this._pricePerSeat = pricePerSeat;
     }

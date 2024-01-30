@@ -2,14 +2,14 @@ namespace Bioscoop;
 
 public class MovieTicket
 {
-    MovieScreening _movieScreening;
+    public MovieScreening MovieScreening;
     private int _rowNr;
     private int _seatNr;
     private bool _isPremium;
 
     public MovieTicket(MovieScreening movieScreening, int seatRow, int seatNr, bool isPremiumReservation)
     {
-        this._movieScreening = movieScreening;
+        this.MovieScreening = movieScreening;
         this._rowNr = seatRow;
         this._seatNr = seatNr;
         this._isPremium = isPremiumReservation;
@@ -17,12 +17,12 @@ public class MovieTicket
 
     public bool IsPremiumTicket()
     {
-        return false;
+        return this._isPremium;
     }
 
     public double GetPrice()
     {
-        return _movieScreening.GetPricePerSeat();
+        return MovieScreening.GetPricePerSeat();
     }
 
     public override string ToString()
