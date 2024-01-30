@@ -2,20 +2,20 @@ namespace Bioscoop;
 
 public class MovieScreening
 {
-    private DateTime dateAndTime;
-    private double pricePerSeat;
-    private Movie movie;
+    private DateTime _dateAndTime { get; }
+    private double _pricePerSeat;
+    private Movie _movie;
 
     public MovieScreening(Movie movie, DateTime dateAndTime, double pricePerSeat)
     {
-        this.movie = movie;
-        this.dateAndTime = dateAndTime;
-        this.pricePerSeat = pricePerSeat;
+        this._movie = movie;
+        this._dateAndTime = dateAndTime;
+        this._pricePerSeat = pricePerSeat;
     }
     
-    public double getPricePerSeat()
+    public double GetPricePerSeat()
     {
-        return pricePerSeat;
+        return _pricePerSeat;
     }
     
     public override string ToString()

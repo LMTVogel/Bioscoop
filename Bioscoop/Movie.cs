@@ -2,16 +2,16 @@ namespace Bioscoop;
 
 public class Movie
 {
-    private string title;
-    private List<MovieScreening> screenings;
+    private string _title;
+    private List<MovieScreening> _screenings;
 
     public Movie(string title)
     {
-        this.title = title;
-        screenings = new List<MovieScreening>();
+        this._title = title;
+        this._screenings = new List<MovieScreening>();
     }
     
-    public void addScreening(MovieScreening movieScreening)
+    public void AddScreening(MovieScreening movieScreening)
     {
         
     }

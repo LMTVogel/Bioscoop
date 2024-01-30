@@ -2,31 +2,43 @@ namespace Bioscoop;
 
 public class Order
 {
-    private int orderNr;
-    private bool isStudentOrder;
+    private int _orderNr;
+    private bool _isStudentOrder;
+    private List<MovieTicket> _movieTickets;
 
     public Order(int orderNr, bool isStudentOrder)
     {
-        this.orderNr = orderNr;
-        this.isStudentOrder = isStudentOrder;
+        this._orderNr = orderNr;
+        this._isStudentOrder = isStudentOrder;
+        this._movieTickets = new List<MovieTicket>();
     }
 
-    public int getOrderNr()
+    public int GetOrderNr()
     {
-        return this.orderNr;
+        return this._orderNr;
     }
     
-    public void addSeatReservation(MovieTicket movieTicket)
+    public void AddSeatReservation(MovieTicket movieTicket)
     {
         
     }
 
-    public double calculatePrice()
+    public double CalculatePrice()
     {
-        return 0.1;
+        double price = 0.0;
+
+        for (int i = 0; i < _movieTickets.Count; i++)
+        {
+            if (i % 2 == 0)
+            {
+                price += _movieTickets[i].GetPrice();
+            }
+        }
+        
+        return price;
     }
 
-    public void export(TicketExportFormat exportFormat)
+    public void Export(TicketExportFormat exportFormat)
     {
         
     }
