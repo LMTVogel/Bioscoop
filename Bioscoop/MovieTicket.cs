@@ -2,7 +2,7 @@ namespace Bioscoop;
 
 public class MovieTicket
 {
-    private MovieScreening _movieScreening;
+    MovieScreening _movieScreening;
     private int _rowNr;
     private int _seatNr;
     private bool _isPremium;

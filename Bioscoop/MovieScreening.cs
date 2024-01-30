@@ -2,9 +2,9 @@ namespace Bioscoop;
 
 public class MovieScreening
 {
-    private DateTime _dateAndTime { get; }
+    private DateTime _dateAndTime;
     private double _pricePerSeat;
-    private Movie _movie;
+    Movie _movie;
 
     public MovieScreening(Movie movie, DateTime dateAndTime, double pricePerSeat)
     {
@@ -16,6 +16,11 @@ public class MovieScreening
     public double GetPricePerSeat()
     {
         return _pricePerSeat;
+    }
+
+    public DateTime GetDateAndTime()
+    {
+        return _dateAndTime;
     }
     
     public override string ToString()
