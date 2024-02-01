@@ -13,11 +13,11 @@ public class Movie
     
     public void AddScreening(MovieScreening movieScreening)
     {
-        
+        _screenings.Add(movieScreening);
     }
 
     public override string ToString()
     {
-        return base.ToString();
+        return _title;
     }
 }
