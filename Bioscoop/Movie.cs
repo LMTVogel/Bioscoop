@@ -10,14 +10,14 @@ public class Movie
         this._title = title;
         this._screenings = new List<MovieScreening>();
     }
-    
+
     public void AddScreening(MovieScreening movieScreening)
     {
-        
+        _screenings.Add(movieScreening);
     }
 
     public override string ToString()
     {
-        return base.ToString();
+        return _title;
     }
 }
