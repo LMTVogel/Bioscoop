@@ -6,3 +6,5 @@ riderModule.iml
 order_*
 .vs/
 .idea
+.DS_Store
+Bioscoop.sln.DotSettings.user
