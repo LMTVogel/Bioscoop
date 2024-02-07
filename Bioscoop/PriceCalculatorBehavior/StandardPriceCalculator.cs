@@ -1,5 +1,4 @@
-using Bioscoop;
-using Bioscoop.PriceCalculatorBehavior;
+namespace Bioscoop.PriceCalculatorBehavior;
 
 public class StandardPriceCalculator : IPriceCalculator
 {
