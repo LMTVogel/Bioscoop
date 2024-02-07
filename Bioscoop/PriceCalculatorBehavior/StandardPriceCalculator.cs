@@ -13,9 +13,10 @@ public class StandardPriceCalculator : IPriceCalculator
             var dayOfWeek = (int)movieTickets[i].MovieScreening.GetDateAndTime().DayOfWeek;
             bool isWeekday = dayOfWeek is <= 4 and > 0; // Checks whether the movie screening is on a weekday. It also checks for zero to avoid Sunday, because Sunday is 0 in the DayOfWeek enum
 
-            if (isWeekday && i % 2 == 0)
+            if (isWeekday && (i + 1) % 2 == 0)
             {
-                price += CalculateTicketPrice(movieTickets[i]);
+                // Do nothing because the second ticket is free on week days
+                price += 0;
             }
             else
             {
