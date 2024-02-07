@@ -1,18 +1,19 @@
 using System.Text.Json;
+using Bioscoop.PriceCalculatorBehavior;
 
 namespace Bioscoop;
 
 public class Order
 {
     private int _orderNr;
-    private bool _isStudentOrder;
     private List<MovieTicket> _movieTickets;
+    private IPriceCalculator _priceCalculator;
 
-    public Order(int orderNr, bool isStudentOrder)
+    public Order(int orderNr, IPriceCalculator priceCalculator)
     {
         this._orderNr = orderNr;
-        this._isStudentOrder = isStudentOrder;
         this._movieTickets = new List<MovieTicket>();
+        this._priceCalculator = priceCalculator;
     }
 
     public int GetOrderNr()
@@ -27,37 +28,7 @@ public class Order
 
     public decimal CalculatePrice()
     {
-        decimal price = Decimal.Zero;
-        bool groupDiscount = false; // Initialize the default for the group discount
-        double premiumPriceAdjustment = _isStudentOrder ? 2 : 3; // Checks whether the order is a student order and sets the premium price adjustment accordingly
-
-        for (int i = 0; i < _movieTickets.Count; i++)
-        {
-            var dayOfWeek = (int)_movieTickets[i].MovieScreening.GetDateAndTime().DayOfWeek;
-            bool isWeekday = dayOfWeek is <= 4 and > 0; // Checks whether the movie screening is on a weekday. It also checks for zero to avoid Sunday, because Sunday is 0 in the DayOfWeek enum
-            if (isWeekday || _isStudentOrder)
-            {
-                // Checks if every second ticket is free
-                if (i % 2 == 0)
-                {
-                    // Checks if the ticket is a premium ticket and adds the premium price adjustment if it is
-                    price += (decimal)(_movieTickets[i].IsPremiumTicket() ? _movieTickets[i].GetPrice() + premiumPriceAdjustment : _movieTickets[i].GetPrice());
-                }
-            }
-            else
-            {
-                // Checks if the order contains 6 or more tickets
-                groupDiscount = _movieTickets.Count >= 6;
-                // Checks if the ticket is a premium ticket and adds the premium price adjustment if it is
-                price += (decimal)(_movieTickets[i].IsPremiumTicket() ? _movieTickets[i].GetPrice() + premiumPriceAdjustment : _movieTickets[i].GetPrice());
-
-            }
-        }
-
-        if (groupDiscount) price *= 0.9M; // Apply a 10% discount if the order contains 6 or more tickets, is a weekend order and is not a student order
-
-        // Return the total price of the order
-        return price;
+        return _priceCalculator.CalculatePrice(_movieTickets);
     }
 
     public void Export(TicketExportFormat exportFormat)
