@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Bioscoop.ExportOrderBehavior;
 using Bioscoop.PriceCalculatorBehavior;
 
 namespace Bioscoop;
@@ -17,7 +18,8 @@ class Program
         MovieTicket movieTicket5 = new(movieScreening, 1, 5, true);
         MovieTicket movieTicket6 = new(movieScreening, 1, 6, false);
         IPriceCalculator studentPriceCalculator = new StudentPriceCalculator();
-        Order order = new(1, studentPriceCalculator);
+        IExportOrder jsonExportOrder = new JsonExportOrder();
+        Order order = new(1, studentPriceCalculator, jsonExportOrder);
 
         order.AddSeatReservation(movieTicket1);
         order.AddSeatReservation(movieTicket2);
@@ -27,6 +29,6 @@ class Program
         // order.AddSeatReservation(movieTicket6);
 
         Console.WriteLine(order.CalculatePrice());
-        order.Export(TicketExportFormat.JSON);
+        order.Export();
     }
 }
