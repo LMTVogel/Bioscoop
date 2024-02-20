@@ -1,23 +1,43 @@
 using System.Text.Json;
+using Bioscoop.OrderStates;
 
 namespace Bioscoop;
 
-public class Order
+public class Order : IOrder
 {
     private int _orderNr;
     private bool _isStudentOrder;
     private List<MovieTicket> _movieTickets;
+    public IOrderState CurrentState { get; set; }
 
     public Order(int orderNr, bool isStudentOrder)
     {
         this._orderNr = orderNr;
         this._isStudentOrder = isStudentOrder;
         this._movieTickets = new List<MovieTicket>();
+        this.CurrentState = new CreatedOrderState();
     }
+    
+    public void SetState(IOrderState state)
+    {
+        this.CurrentState = state;
+    }
+
+    public void Submit() => CurrentState.Submit(this);
+    public void Cancel() => CurrentState.Cancel(this);
+    public void Pay() => CurrentState.Pay(this);
+    public void Remind() => CurrentState.Remind(this);
+    public void Complete() => CurrentState.Complete(this);
+    public void Edit() => CurrentState.Edit(this);
 
     public int GetOrderNr()
     {
         return this._orderNr;
+    }
+    
+    public IEnumerable<MovieTicket> GetMovieTickets()
+    {
+        return this._movieTickets;
     }
 
     public void AddSeatReservation(MovieTicket movieTicket)
@@ -38,7 +58,7 @@ public class Order
             if (isWeekday || _isStudentOrder)
             {
                 // Checks if every second ticket is free
-                if (i % 2 == 0)
+                if ((i + 1) % 2 == 0)
                 {
                     // Checks if the ticket is a premium ticket and adds the premium price adjustment if it is
                     price += (decimal)(_movieTickets[i].IsPremiumTicket() ? _movieTickets[i].GetPrice() + premiumPriceAdjustment : _movieTickets[i].GetPrice());
