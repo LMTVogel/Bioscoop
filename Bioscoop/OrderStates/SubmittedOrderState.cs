@@ -1,45 +1,53 @@
+using Bioscoop.Observable;
+
 namespace Bioscoop.OrderStates;
 
 public class SubmittedOrderState : IOrderState
 {
-    public SubmittedOrderState(IOrder order)
+    private IOrder _order;
+    private IObservable _observable;
+
+    public SubmittedOrderState(IOrder order, IObservable observable)
     {
+        _order = order;
+        _observable = observable;
+        observable.Notify("Order is submitted");
         IEnumerable<MovieTicket> movieTickets = order.GetMovieTickets();
         
         if (movieTickets.Any(ticket => ticket.MovieScreening.GetDateAndTime() - DateTime.Now < TimeSpan.FromHours(24)))
         {
-            this.Remind(order);
+            this.Remind();
         }
     }
     
-    public void Submit(IOrder order)
+    public void Submit()
     {
         throw new NotImplementedException();
     }
 
-    public void Cancel(IOrder order)
+    public void Cancel()
     {
-        order.SetState(new CancelledOrderState());
+        _order.SetState(new CancelledOrderState(_order, _observable));
     }
 
-    public void Pay(IOrder order)
+    public void Pay()
     {
-        order.SetState(new PaidOrderState());
+        _order.SetState(new PaidOrderState(_order, _observable));
     }
 
-    public void Edit(IOrder order)
+    public void Edit()
     {
         Console.WriteLine("Order is edited.");
     }
 
-    public void Complete(IOrder order)
+    public void Complete()
     {
         throw new NotImplementedException();
     }
 
-    public void Remind(IOrder order)
+    public void Remind()
     {
-        order.SetState(new ProvisionalOrderState(order));
+        _order.SetState(new ProvisionalOrderState(_order, _observable));
         Console.WriteLine("Reminder: Your movie starts in 24 hours. You need to pay for your order.");
     }
 }

@@ -1,29 +1,40 @@
+using Bioscoop.Observable;
+
 namespace Bioscoop.OrderStates;
 
 public class CreatedOrderState : IOrderState
 {
-    public void Submit(IOrder order)
+    private IOrder _order;
+    private IObservable _observable;
+
+    public CreatedOrderState(IOrder order, IObservable observable)
     {
-        order.SetState(new SubmittedOrderState(order));
+        _order = order;
+        _observable = observable;
     }
 
-    public void Cancel(IOrder order)
+    public void Submit()
     {
-        order.SetState(new CancelledOrderState());
+        _order.SetState(new SubmittedOrderState(_order, _observable));
     }
 
-    public void Pay(IOrder order) { throw new InvalidOperationException("Order must be submitted before payment."); }
-    public void Edit(IOrder order)
+    public void Cancel()
+    {
+        _order.SetState(new CancelledOrderState(_order, _observable));
+    }
+
+    public void Pay() { throw new InvalidOperationException("Order must be submitted before payment."); }
+    public void Edit()
     {
         throw new NotImplementedException();
     }
 
-    public void Complete(IOrder order)
+    public void Complete()
     {
         throw new NotImplementedException();
     }
 
-    public void Remind(IOrder order)
+    public void Remind()
     {
         throw new NotImplementedException();
     }

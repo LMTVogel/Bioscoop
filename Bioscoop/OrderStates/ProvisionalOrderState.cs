@@ -1,43 +1,52 @@
+using Bioscoop.Observable;
+
 namespace Bioscoop.OrderStates;
 
 public class ProvisionalOrderState : IOrderState
 {
-    public ProvisionalOrderState(IOrder order)
+
+    private IOrder _order;
+    private IObservable _observable;
+
+    public ProvisionalOrderState(IOrder order, IObservable observable)
     {
-        IEnumerable<MovieTicket> movieTickets = order.GetMovieTickets();
+        _order = order;
+        _observable = observable;
+        observable.Notify("Order is provisional");
+        IEnumerable<MovieTicket> movieTickets = _order.GetMovieTickets();
         
         if (movieTickets.Any(ticket => ticket.MovieScreening.GetDateAndTime() - DateTime.Now < TimeSpan.FromHours(12)))
         {
-            this.Cancel(order);
+            this.Cancel();
         }
     }
-    public void Submit(IOrder order)
+    public void Submit()
     {
         throw new NotImplementedException();
     }
 
-    public void Cancel(IOrder order)
+    public void Cancel()
     {
-        order.SetState(new CancelledOrderState());
+        _order.SetState(new CancelledOrderState(_order, _observable));
         Console.WriteLine("Order is cancelled.");
     }
 
-    public void Pay(IOrder order)
+    public void Pay()
     {
-        order.SetState(new PaidOrderState());
+        _order.SetState(new PaidOrderState(_order, _observable));
     }
 
-    public void Edit(IOrder order)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Complete(IOrder order)
+    public void Edit()
     {
         throw new NotImplementedException();
     }
 
-    public void Remind(IOrder order)
+    public void Complete()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Remind()
     {
         throw new NotImplementedException();
     }

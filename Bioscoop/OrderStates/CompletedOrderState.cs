@@ -2,32 +2,39 @@ namespace Bioscoop.OrderStates;
 
 public class CompletedOrderState : IOrderState
 {
-    public void Submit(IOrder order)
+    private IOrder _order;
+
+    public CompletedOrderState(IOrder order)
+    {
+        _order = order;
+    }
+
+    public void Submit()
     {
         throw new NotImplementedException();
     }
 
-    public void Cancel(IOrder order)
+    public void Cancel()
     {
         throw new NotImplementedException();
     }
 
-    public void Pay(IOrder order)
+    public void Pay()
     {
         throw new NotImplementedException();
     }
 
-    public void Edit(IOrder order)
+    public void Edit()
     {
         throw new NotImplementedException();
     }
 
-    public void Complete(IOrder order)
+    public void Complete()
     {
         throw new NotImplementedException();
     }
 
-    public void Remind(IOrder order)
+    public void Remind()
     {
         throw new NotImplementedException();
     }

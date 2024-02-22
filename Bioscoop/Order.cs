@@ -1,5 +1,7 @@
 using System.Text.Json;
+using Bioscoop.Observable;
 using Bioscoop.OrderStates;
+using Bioscoop.subscribers;
 
 namespace Bioscoop;
 
@@ -9,13 +11,15 @@ public class Order : IOrder
     private bool _isStudentOrder;
     private List<MovieTicket> _movieTickets;
     public IOrderState CurrentState { get; set; }
+    private IObservable _observable;
 
     public Order(int orderNr, bool isStudentOrder)
     {
         this._orderNr = orderNr;
         this._isStudentOrder = isStudentOrder;
         this._movieTickets = new List<MovieTicket>();
-        this.CurrentState = new CreatedOrderState();
+        _observable = new Observable.Observable();
+        this.CurrentState = new CreatedOrderState(this, _observable);
     }
     
     public void SetState(IOrderState state)
@@ -23,12 +27,12 @@ public class Order : IOrder
         this.CurrentState = state;
     }
 
-    public void Submit() => CurrentState.Submit(this);
-    public void Cancel() => CurrentState.Cancel(this);
-    public void Pay() => CurrentState.Pay(this);
-    public void Remind() => CurrentState.Remind(this);
-    public void Complete() => CurrentState.Complete(this);
-    public void Edit() => CurrentState.Edit(this);
+    public void Submit() => CurrentState.Submit();
+    public void Cancel() => CurrentState.Cancel();
+    public void Pay() => CurrentState.Pay();
+    public void Remind() => CurrentState.Remind();
+    public void Complete() => CurrentState.Complete();
+    public void Edit() => CurrentState.Edit();
 
     public int GetOrderNr()
     {
@@ -132,5 +136,10 @@ public class Order : IOrder
             default:
                 throw new ArgumentOutOfRangeException(nameof(exportFormat), exportFormat, null);
         }
+    }
+
+    public void Subscribe(ISubscriber subscriber)
+    {
+        _observable.Subscribe(subscriber);
     }
 }

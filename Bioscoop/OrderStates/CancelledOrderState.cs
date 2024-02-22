@@ -1,33 +1,45 @@
+using Bioscoop.Observable;
+
 namespace Bioscoop.OrderStates;
 
 public class CancelledOrderState : IOrderState
 {
-    public void Submit(IOrder order)
+    private IOrder _order;
+    private IObservable _observable;
+
+    public CancelledOrderState(IOrder order, IObservable observable)
+    {
+        _order = order;
+        _observable = observable;
+        _observable.Notify("Order is cancelled");
+    }
+
+    public void Submit()
     {
         throw new NotImplementedException();
     }
 
-    public void Cancel(IOrder order)
+    public void Cancel()
     {
         throw new NotImplementedException();
     }
 
-    public void Pay(IOrder order)
+    public void Pay()
     {
         throw new NotImplementedException();
     }
 
-    public void Edit(IOrder order)
+    public void Edit()
     {
         throw new NotImplementedException();
     }
 
-    public void Complete(IOrder order)
+    public void Complete()
     {
         throw new NotImplementedException();
     }
 
-    public void Remind(IOrder order)
+    public void Remind()
     {
         throw new NotImplementedException();
     }
